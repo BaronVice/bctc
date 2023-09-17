@@ -54,20 +54,24 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(publicRoutes).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
+
                 .authenticationProvider(authenticationProvider())
-                .formLogin(AbstractHttpConfigurer::disable);
+//                .formLogin(login -> login.successForwardUrl("/api/v1/students/")
+//                        .loginProcessingUrl("/api/auth/signin"));
+                .formLogin(AbstractHttpConfigurer::disable)
 //                .logout(logout -> logout
 //                        .logoutUrl("/logout")
 //                        .invalidateHttpSession(true)
 //                        .deleteCookies("JSESSIONID")
 //                        .logoutSuccessUrl("/login" + "?logout"))
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                        .invalidSessionUrl("/invalidSession")
-//                        .maximumSessions(1)
-//                        .maxSessionsPreventsLogin(true))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .invalidSessionUrl("/invalidSession")
+                        .maximumSessions(2)
+                        .maxSessionsPreventsLogin(true));
 //                .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();

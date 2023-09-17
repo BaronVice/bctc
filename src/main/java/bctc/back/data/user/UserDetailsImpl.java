@@ -24,7 +24,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 // Combines info from User entity and its extension (like student, tutor etc.)
-class UserDetailsImpl implements UserDetails, CredentialsContainer {
+public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     private Long id;
     private String username;
     private String accountPassword;
