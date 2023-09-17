@@ -1,12 +1,12 @@
 package bctc.back.data.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Student extends User {
-
     public Student(String username, String password){
         this.setAccountPassword(password);
         this.setUsername(username);
@@ -28,12 +27,13 @@ public class Student extends User {
 
     public LocalDate birthdate;
 
-    @Size(min = 1, max = 11)
+    // todo IDK how to store NULL or number instead of 0 or number
+    @Min(0)
+    @Max(11)
     public int grade_number;
 
-    @Size(min = 1, max = 1)
     @Pattern(regexp = "[А-Я]")
-    public char grade_letter;
+    public String grade_letter;
 
     @ManyToMany
     @JoinTable(

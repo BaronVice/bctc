@@ -18,13 +18,4 @@ public class StudentServiceImpl implements StudentService{
     public List<Student> findAll() {
         return studentRepository.findAll();
     }
-
-    @Override
-    public Student save(Student student) {
-        Optional<Student> foundStudent = studentRepository.findByUsername(student.getUsername());
-        if (foundStudent.isPresent()) throw new RuntimeException("Holy shit, you're already exist, bro");
-
-        student.setAccountPassword(passwordEncoder.encode(student.getPassword()));
-        return studentRepository.save(student);
-    }
 }

@@ -8,5 +8,8 @@ public record AuthRequestDto(
         @NotBlank
         String username,
         @NotBlank
-        String password) {
+        String password,
+        @NotNull
+        Role role
+        ) {
 }

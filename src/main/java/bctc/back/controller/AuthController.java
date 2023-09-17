@@ -1,10 +1,11 @@
 package bctc.back.controller;
 
+import bctc.back.data.model.Student;
 import bctc.back.data.model.User;
 import bctc.back.data.student.StudentRepository;
 import bctc.back.data.user.UserRepository;
+import bctc.back.exception.UserAlreadyExistsException;
 import bctc.back.security.AuthRequestDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,21 +25,31 @@ public class AuthController {
     final UserRepository userRepository;
     final StudentRepository studentRepository;
 
+    @PostMapping("/public-test")
+    public ResponseEntity<?>publicTest(@Validated @RequestBody AuthRequestDto request) {
+        return ResponseEntity.ok("That's all good man");
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?>registerUser(@Validated @RequestBody AuthRequestDto request){
-        return ResponseEntity.ok("That's all good man");
+        Optional<User> foundUser = userRepository.findByUsername(request.username());
+        if (foundUser.isPresent()) throw new UserAlreadyExistsException();
 
-//        Optional<User> foundUser = userRepository.findByUsername(authRequestDto.username());
-//        if (foundUser.isEmpty()) throw new RuntimeException("Holy shit, you're already exist, bro");
-//
-//        String encodedPassword = passwordEncoder.encode(authRequestDto.password());
-//        User newUser = User.builder()
-//                .accountPassword(encodedPassword)
-//                .username(authRequestDto.username())
-//                .build();
-//
-//        userRepository.save(newUser);
-//
-//        return newUser;
+        String encodedPassword = passwordEncoder.encode(request.password());
+
+        switch (request.role()){
+            case STUDENT -> {
+                Student newStudent = new Student();
+                newStudent.setAccountPassword(encodedPassword);
+                newStudent.setUsername(request.username());
+                studentRepository.save(newStudent);
+                return ResponseEntity.ok(newStudent);
+            }
+            default -> {
+                throw new RuntimeException("Unknown role provided");
+            }
+        }
+
+//        return ResponseEntity.ok(newUser);
     }
 }
