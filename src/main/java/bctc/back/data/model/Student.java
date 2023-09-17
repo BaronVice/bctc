@@ -1,6 +1,7 @@
 package bctc.back.data.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,16 +17,22 @@ import java.util.List;
 @Data
 public class Student extends User {
 
+    public Student(String username, String password){
+        this.setAccountPassword(password);
+        this.setUsername(username);
+    }
+
     @OneToOne
     @JoinColumn(name = "school_id", referencedColumnName = "id")
     public School school;
 
     public LocalDate birthdate;
 
-    @Size(min = 1, max = 1)
-    public char grade_number;
+    @Size(min = 1, max = 11)
+    public int grade_number;
 
     @Size(min = 1, max = 1)
+    @Pattern(regexp = "[А-Я]")
     public char grade_letter;
 
     @ManyToMany
