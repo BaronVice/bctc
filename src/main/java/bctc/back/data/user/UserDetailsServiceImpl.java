@@ -8,32 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public User registerUser(AuthRequestDto authRequestDto) {
-        Optional<User> foundUser = userRepository.findByUsername(authRequestDto.username());
-        if (foundUser.isEmpty()) throw new RuntimeException("Holy shit, you're already exist, bro");
-
-        String encodedPassword = passwordEncoder.encode(authRequestDto.password());
-        User newUser = User.builder()
-                .accountPassword(encodedPassword)
-                .username(authRequestDto.username())
-                .build();
-
-        userRepository.save(newUser);
-
-        return newUser;
-    }
 
     @Override
     public User delete(String id) {

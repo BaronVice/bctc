@@ -7,11 +7,12 @@ server:
 
 spring:
   jpa:
+    open-in-view: false # https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
     hibernate:
       ddl-auto: create # todo change in future to not lose data
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false # console became super messy
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
@@ -20,3 +21,21 @@ spring:
     username: postgres
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
+
+
+
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: example@gmail.com
+#    password: examplepassword
+#    properties:
+#      mail:
+#        smtp:
+#          timeout: 5000
+#          writetimeout: 5000
+#          auth: true
+#          connectiontimeout: 5000
+#          starttls:
+#            enable: true
+#            required: true
