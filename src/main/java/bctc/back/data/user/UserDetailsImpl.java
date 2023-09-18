@@ -38,7 +38,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(role.toString());
+        return AuthorityUtils.createAuthorityList("ROLE_ADMIN"); // todo its temporary
     }
 
     @Override
@@ -53,22 +53,22 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isAccountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return true;
     }
 
     @Override
