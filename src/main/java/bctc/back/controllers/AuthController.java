@@ -1,10 +1,9 @@
-package bctc.back.controller;
+package bctc.back.controllers;
 
 import bctc.back.data.model.Student;
-import bctc.back.data.model.User;
+import bctc.back.data.user.User;
 import bctc.back.data.student.StudentRepository;
-import bctc.back.data.user.UserDetailsImpl;
-import bctc.back.data.user.UserRepository;
+import bctc.back.data.user.IUserRepository;
 import bctc.back.exception.UserAlreadyExistsException;
 import bctc.back.security.AuthRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
-    final PasswordEncoder passwordEncoder;
-    final UserRepository userRepository;
-    final StudentRepository studentRepository;
-    final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final IUserRepository IUserRepository;
+    private final StudentRepository studentRepository;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/public-test")
     public ResponseEntity<?>publicTest(@Validated @RequestBody AuthRequestDto request) {
@@ -38,15 +37,15 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?>registerUser(@Validated @RequestBody AuthRequestDto request){
-        Optional<User> foundUser = userRepository.findByUsername(request.username());
+        Optional<User> foundUser = IUserRepository.findByUsername(request.username());
         if (foundUser.isPresent()) throw new UserAlreadyExistsException();
 
         String encodedPassword = passwordEncoder.encode(request.password());
 
         switch (request.role()){
-            case ROLE_STUDENT -> {
+            case STUDENT -> {
                 Student newStudent = new Student();
-                newStudent.setAccountPassword(encodedPassword);
+                newStudent.setPassword(encodedPassword);
                 newStudent.setUsername(request.username());
                 studentRepository.save(newStudent);
                 return ResponseEntity.ok(newStudent);
@@ -65,7 +64,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok("Welcome in, mf");
     }

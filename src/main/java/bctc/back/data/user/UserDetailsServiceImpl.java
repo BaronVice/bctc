@@ -1,20 +1,16 @@
 package bctc.back.data.user;
 
-import bctc.back.data.model.User;
-import bctc.back.security.AuthRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+public class UserDetailsServiceImpl implements IUserDetailsService {
+    private final IUserRepository IUserRepository;
 
     @Override
     public User delete(String id) {
@@ -28,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        return IUserRepository.findAll();
     }
 
     @Override
@@ -49,13 +45,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = IUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        return UserDetailsImpl.builder()
+        return User.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .accountPassword(user.getAccountPassword())
+                .password(user.getPassword())
                 .build();
     }
 }

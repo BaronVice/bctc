@@ -1,8 +1,8 @@
 package bctc.back.data.model;
 
+import bctc.back.data.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Tutor extends User{
+public class Tutor extends User {
     @Email(regexp = ".+@.+\\..+")
     public String email;
 
