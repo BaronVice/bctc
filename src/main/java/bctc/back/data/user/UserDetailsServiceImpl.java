@@ -4,31 +4,17 @@ import bctc.back.data.model.User;
 import bctc.back.security.AuthRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
-
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public User registerUser(AuthRequestDto authRequestDto) {
-        Optional<User> foundUser = userRepository.findByUsername(authRequestDto.username());
-        if (foundUser.isEmpty()) throw new RuntimeException("Holy shit, you're already exist, bro");
-
-        String encodedPassword = passwordEncoder.encode(authRequestDto.password());
-        User newUser = User.builder()
-                .accountPassword(encodedPassword)
-                .username(authRequestDto.username())
-                .build();
-
-        userRepository.save(newUser);
-
-        return newUser;
-    }
 
     @Override
     public User delete(String id) {
@@ -42,7 +28,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
@@ -58,5 +44,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
         return null;
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        return UserDetailsImpl.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .accountPassword(user.getAccountPassword())
+                .build();
     }
 }
