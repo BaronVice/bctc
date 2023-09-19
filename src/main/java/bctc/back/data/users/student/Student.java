@@ -1,6 +1,11 @@
-package bctc.back.data.model;
+package bctc.back.data.users.student;
 
-import jakarta.annotation.Nullable;
+import bctc.back.data.additions.Course;
+import bctc.back.data.additions.Event;
+import bctc.back.data.additions.Group;
+import bctc.back.data.additions.School;
+import bctc.back.data.users.Parent;
+import bctc.back.data.users.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,11 +21,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Student extends User {
-    public Student(String username, String password){
-        this.setAccountPassword(password);
-        this.setUsername(username);
-    }
-
     @OneToOne
     @JoinColumn(name = "school_id", referencedColumnName = "id")
     public School school;
@@ -32,6 +32,7 @@ public class Student extends User {
     @Max(11)
     public int grade_number;
 
+    // TODO: ASCII will be faster (cringe, but better constant - O(ALPHABET_SIZE) vs O(1))
     @Pattern(regexp = "[А-Я]")
     public String grade_letter;
 

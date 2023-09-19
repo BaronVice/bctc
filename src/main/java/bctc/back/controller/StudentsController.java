@@ -1,11 +1,8 @@
 package bctc.back.controller;
 
-import bctc.back.data.model.Student;
-import bctc.back.data.student.StudentService;
-import bctc.back.security.AuthRequestDto;
+import bctc.back.data.users.student.Student;
+import bctc.back.data.users.student.IStudentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/students")
 public class StudentsController {
-    private final StudentService studentService;
+    private final IStudentService studentService;
 
     @GetMapping("/")
     public List<Student> getAllStudents(){

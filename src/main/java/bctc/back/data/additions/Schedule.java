@@ -1,4 +1,4 @@
-package bctc.back.data.model;
+package bctc.back.data.additions;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

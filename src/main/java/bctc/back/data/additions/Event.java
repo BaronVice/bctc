@@ -1,5 +1,6 @@
-package bctc.back.data.model;
+package bctc.back.data.additions;
 
+import bctc.back.data.users.student.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

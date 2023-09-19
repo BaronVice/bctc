@@ -1,8 +1,9 @@
-package bctc.back.data.model;
+package bctc.back.data.additions;
 
+import bctc.back.data.users.student.Student;
+import bctc.back.data.users.Tutor;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

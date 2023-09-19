@@ -1,4 +1,4 @@
-package bctc.back.exception;
+package bctc.back.exceptions;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.ErrorResponseException;

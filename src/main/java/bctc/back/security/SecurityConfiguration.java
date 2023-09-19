@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +22,8 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    final UserDetailsService userDetailsService;
+    // Comes from CredentialsService
+    private final UserDetailsService userDetailsService;
 
     private final String[] publicRoutes = {"/users/*"};
 

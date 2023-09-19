@@ -1,11 +1,12 @@
 package bctc.back.controller;
 
-import bctc.back.data.model.Student;
-import bctc.back.data.model.User;
-import bctc.back.data.student.StudentRepository;
-import bctc.back.data.user.UserDetailsImpl;
-import bctc.back.data.user.UserRepository;
-import bctc.back.exception.UserAlreadyExistsException;
+import bctc.back.data.users.Parent;
+import bctc.back.data.users.student.Student;
+import bctc.back.data.credentials.Credentials;
+import bctc.back.data.credentials.CredentialsDetails;
+import bctc.back.data.credentials.CredentialsRepository;
+import bctc.back.data.users.Tutor;
+import bctc.back.exceptions.UserAlreadyExistsException;
 import bctc.back.security.AuthRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,8 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
     final PasswordEncoder passwordEncoder;
-    final UserRepository userRepository;
-    final StudentRepository studentRepository;
     final AuthenticationManager authenticationManager;
+    final CredentialsRepository credentialsRepository;
 
     @PostMapping("/public-test")
     public ResponseEntity<?>publicTest(@Validated @RequestBody AuthRequestDto request) {
@@ -38,34 +38,42 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?>registerUser(@Validated @RequestBody AuthRequestDto request){
-        Optional<User> foundUser = userRepository.findByUsername(request.username());
-        if (foundUser.isPresent()) throw new UserAlreadyExistsException();
-
+        checkIfExists(request.username());
         String encodedPassword = passwordEncoder.encode(request.password());
 
+        Credentials credentials = Credentials.builder()
+                .username(request.username())
+                .password(encodedPassword)
+                .role(request.role())
+                .build();
+
         switch (request.role()){
-            case ROLE_STUDENT -> {
-                Student newStudent = new Student();
-                newStudent.setAccountPassword(encodedPassword);
-                newStudent.setUsername(request.username());
-                studentRepository.save(newStudent);
-                return ResponseEntity.ok(newStudent);
-            }
-            default -> {
-                throw new RuntimeException("Unknown role provided");
-            }
+            case STUDENT -> credentials.setStudent(new Student());
+            case PARENT -> credentials.setParent(new Parent());
+            case TUTOR -> credentials.setTutor(new Tutor());
+//            default -> throw new RuntimeException("Unknown role provided");
         }
-//        return ResponseEntity.ok(newUser);
+
+        credentialsRepository.save(credentials);
+
+        return ResponseEntity.ok("User has been successfully created");
+    }
+
+    private void checkIfExists(String username){
+        Optional<Credentials> foundUser = credentialsRepository.findByUsername(username);
+        if (foundUser.isPresent())
+            throw new UserAlreadyExistsException();
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?>authenticateUser( @RequestBody AuthRequestDto request) {
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        CredentialsDetails details = (CredentialsDetails) authentication.getPrincipal();
 
         return ResponseEntity.ok("Welcome in, mf");
     }

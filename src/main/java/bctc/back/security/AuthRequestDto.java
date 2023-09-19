@@ -11,5 +11,5 @@ public record AuthRequestDto(
         String password,
         @NotNull
         Role role
-        ) {
+) {
 }
