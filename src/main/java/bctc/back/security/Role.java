@@ -1,8 +1,8 @@
 package bctc.back.security;
 
 public enum Role {
-    STUDENT,
-    TUTOR,
-    PARENT,
-    ADMIN
+    ROLE_STUDENT,
+    ROLE_TUTOR,
+    ROLE_TEACHER,
+    ROLE_ADMIN
 }

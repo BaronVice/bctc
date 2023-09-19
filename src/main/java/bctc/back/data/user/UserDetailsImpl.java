@@ -1,7 +1,12 @@
 package bctc.back.data.user;
 
+import bctc.back.data.model.School;
 import bctc.back.security.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,43 +14,36 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.List;
 
-@Entity
+import java.time.LocalDate;
+import java.util.Collection;
+
 @Data
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "_user")
-public class User implements UserDetails, CredentialsContainer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+// Combines info from User entity and its extension (like student, tutor etc.)
+public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     private Long id;
     private String username;
-    private String password;
-
-    // ... additional information may be placed here
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String accountPassword;
+    private String email;
+    private String phone;
     private boolean isActive = true;
     private boolean isNonLocked = true;
     private boolean isNonExpired = true;
     private boolean isAccountNonExpired = true;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return AuthorityUtils.createAuthorityList(role.toString());
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return accountPassword;
     }
 
     @Override
@@ -75,6 +73,6 @@ public class User implements UserDetails, CredentialsContainer {
 
     @Override
     public void eraseCredentials() {
-        this.password = null;
+        this.accountPassword = null;
     }
 }
