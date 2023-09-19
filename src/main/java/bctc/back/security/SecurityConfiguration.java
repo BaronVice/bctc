@@ -47,6 +47,7 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
+
     @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -71,8 +72,8 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .invalidSessionUrl("/invalidSession")
                         .maximumSessions(2)
-                        .maxSessionsPreventsLogin(true));
-//                .httpBasic(AbstractHttpConfigurer::disable);
+                        .maxSessionsPreventsLogin(true))
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
