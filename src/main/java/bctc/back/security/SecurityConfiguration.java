@@ -25,7 +25,7 @@ public class SecurityConfiguration {
     // Comes from CredentialsService
     private final UserDetailsService userDetailsService;
 
-    private final String[] publicRoutes = {"/users/*"};
+    private final String[] publicRoutes = {"/users/*", /* TODO: delete later-> */"/api/v1/students/index"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
