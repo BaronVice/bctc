@@ -1,7 +1,7 @@
 package bctc.back.data.additions;
 
 import bctc.back.data.users.student.Student;
-import bctc.back.data.users.Tutor;
+import bctc.back.data.users.turor.Tutor;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

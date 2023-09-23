@@ -1,8 +1,8 @@
 package bctc.back.data.credentials;
 
-import bctc.back.data.users.Parent;
+import bctc.back.data.users.parent.Parent;
 import bctc.back.data.users.student.Student;
-import bctc.back.data.users.Tutor;
+import bctc.back.data.users.turor.Tutor;
 import bctc.back.security.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

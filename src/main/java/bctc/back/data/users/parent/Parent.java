@@ -1,8 +1,9 @@
-package bctc.back.data.users;
+package bctc.back.data.users.parent;
 
-import bctc.back.data.credentials.Credentials;
-import bctc.back.data.additions.Group;
-import jakarta.persistence.*;
+import bctc.back.data.users.User;
+import bctc.back.data.users.student.Student;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -13,8 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Tutor extends User {
-
+public class Parent extends User {
     @Email(regexp = ".+@.+\\..+")
     public String email;
 
@@ -22,12 +22,6 @@ public class Tutor extends User {
     @Pattern(regexp = "/(^8|7|\\+7)((\\d{10})|(\\s\\(\\d{3}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}))/")
     public String phone;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tutor_group",
-            joinColumns = @JoinColumn(name = "tutor_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id")
-    )
-    public List<Group> groups;
-
+    @ManyToMany(mappedBy = "parents")
+    public List<Student> students;
 }

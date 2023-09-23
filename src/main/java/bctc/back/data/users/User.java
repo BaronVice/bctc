@@ -4,7 +4,6 @@ import bctc.back.data.credentials.Credentials;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +16,7 @@ public abstract class User {
     @Column(name = "credentials_id")
     protected Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "credentials_id")
     @JsonIgnore

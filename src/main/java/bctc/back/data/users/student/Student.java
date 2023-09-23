@@ -4,7 +4,7 @@ import bctc.back.data.additions.Course;
 import bctc.back.data.additions.Event;
 import bctc.back.data.additions.Group;
 import bctc.back.data.additions.School;
-import bctc.back.data.users.Parent;
+import bctc.back.data.users.parent.Parent;
 import bctc.back.data.users.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

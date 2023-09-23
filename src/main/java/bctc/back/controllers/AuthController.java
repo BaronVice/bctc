@@ -1,11 +1,8 @@
-package bctc.back.controller;
+package bctc.back.controllers;
 
-import bctc.back.data.users.Parent;
-import bctc.back.data.users.student.Student;
 import bctc.back.data.credentials.Credentials;
 import bctc.back.data.credentials.CredentialsDetails;
 import bctc.back.data.credentials.CredentialsRepository;
-import bctc.back.data.users.Tutor;
 import bctc.back.exceptions.UserAlreadyExistsException;
 import bctc.back.security.AuthRequestDto;
 import lombok.RequiredArgsConstructor;

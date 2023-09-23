@@ -1,4 +1,4 @@
-package bctc.back.controller;
+package bctc.back.controllers;
 
 import bctc.back.data.users.student.Student;
 import bctc.back.data.users.student.IStudentService;
