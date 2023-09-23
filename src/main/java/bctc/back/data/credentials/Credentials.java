@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Credentials {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String username;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -33,5 +33,26 @@ public class Credentials {
     @OneToOne(mappedBy = "credentials", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Tutor tutor;
+
+    public void connectUser(Role role){
+        switch (role){
+            case STUDENT -> {
+                Student s = new Student();
+                s.setCredentials(this);
+                this.setStudent(s);
+            }
+            case PARENT -> {
+                Parent p = new Parent();
+                p.setCredentials(this);
+                this.setParent(p);
+            }
+            case TUTOR -> {
+                Tutor t = new Tutor();
+                t.setCredentials(this);
+                this.setTutor(t);
+            }
+//            default -> throw new RuntimeException("Unknown role provided");
+        }
+    }
 
 }

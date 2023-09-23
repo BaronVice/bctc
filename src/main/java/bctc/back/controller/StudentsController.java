@@ -13,7 +13,7 @@ import java.util.List;
 public class StudentsController {
     private final IStudentService studentService;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public List<Student> getAllStudents(){
         return studentService.findAll();
     }
