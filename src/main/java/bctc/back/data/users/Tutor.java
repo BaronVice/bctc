@@ -13,7 +13,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Tutor extends Credentials {
+public class Tutor extends User {
+
     @Email(regexp = ".+@.+\\..+")
     public String email;
 

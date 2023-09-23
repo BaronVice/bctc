@@ -47,13 +47,7 @@ public class AuthController {
                 .role(request.role())
                 .build();
 
-        switch (request.role()){
-            case STUDENT -> credentials.setStudent(new Student());
-            case PARENT -> credentials.setParent(new Parent());
-            case TUTOR -> credentials.setTutor(new Tutor());
-//            default -> throw new RuntimeException("Unknown role provided");
-        }
-
+        credentials.connectUser(request.role());
         credentialsRepository.save(credentials);
 
         return ResponseEntity.ok("User has been successfully created");
