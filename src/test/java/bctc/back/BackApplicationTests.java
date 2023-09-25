@@ -39,18 +39,10 @@ class BackApplicationTests {
 	private final StudentRepository studentRepository;
 	private final TutorRepository tutorRepository;
 
-
-	@SneakyThrows
 	@Test
 	@Transactional
 	public void testLoadDataInCredentials(){
-		int expectedSize;
-		try (Stream<String> stream = Files.lines(
-				Path.of("src/main/resources/sql/credentials.sql"),
-				StandardCharsets.UTF_8)
-		) {
-			expectedSize = (int) stream.count();
-		}
+		int expectedSize = getFileLines("src/main/resources/sql/credentials.sql");
 
 		assertSizes(
 				credentialsRepository.findAll().size(),
@@ -58,17 +50,10 @@ class BackApplicationTests {
 		);
 	}
 
-	@SneakyThrows
 	@Test
 	@Transactional
 	public void testLoadDataInStudent(){
-		int expectedSize;
-		try (Stream<String> stream = Files.lines(
-				Path.of("src/main/resources/sql/student.sql"),
-				StandardCharsets.UTF_8)
-		) {
-			expectedSize = (int) stream.count();
-		}
+		int expectedSize = getFileLines("src/main/resources/sql/student.sql");
 
 		assertSizes(
 				studentRepository.findAll().size(),
@@ -76,17 +61,10 @@ class BackApplicationTests {
 		);
 	}
 
-	@SneakyThrows
 	@Test
 	@Transactional
 	public void testLoadDataInParent(){
-		int expectedSize;
-		try (Stream<String> stream = Files.lines(
-				Path.of("src/main/resources/sql/parent.sql"),
-				StandardCharsets.UTF_8)
-		) {
-			expectedSize = (int) stream.count();
-		}
+		int expectedSize = getFileLines("src/main/resources/sql/parent.sql");
 
 		assertSizes(
 				parentRepository.findAll().size(),
@@ -94,17 +72,10 @@ class BackApplicationTests {
 		);
 	}
 
-	@SneakyThrows
 	@Test
 	@Transactional
 	public void testLoadDataInTutor(){
-		int expectedSize;
-		try (Stream<String> stream = Files.lines(
-				Path.of("src/main/resources/sql/tutor.sql"),
-				StandardCharsets.UTF_8)
-		) {
-			expectedSize = (int) stream.count();
-		}
+		int expectedSize = getFileLines("src/main/resources/sql/tutor.sql");
 
 		assertSizes(
 				tutorRepository.findAll().size(),
@@ -119,5 +90,18 @@ class BackApplicationTests {
 						"Size error: given size is %d but expected %d", givenSize, expectedSize
 				)
 		);
+	}
+
+	@SneakyThrows
+	private int getFileLines(String path){
+		int lines;
+		try (Stream<String> stream = Files.lines(
+				Path.of(path),
+				StandardCharsets.UTF_8)
+		) {
+			lines = (int) stream.count();
+		}
+
+		return lines;
 	}
 }
