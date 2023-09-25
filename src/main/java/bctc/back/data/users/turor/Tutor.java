@@ -19,7 +19,8 @@ public class Tutor extends User {
     public String email;
 
     // https://regex101.com/r/eE5hI4/1
-    @Pattern(regexp = "/(^8|7|\\+7)((\\d{10})|(\\s\\(\\d{3}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}))/")
+//    @Pattern(regexp = "(^8|7|\\+7)((\\d{10})|(\\s\\(\\d{3}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}))")
+    @Pattern(regexp = "(^(\\d{10})|(\\s\\(\\d{3}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}))")
     public String phone;
 
     @ManyToMany

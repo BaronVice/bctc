@@ -1,8 +1,8 @@
-package bctc.back.data.users.student;
+package bctc.back.data.users.turor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface TutorRepository extends JpaRepository<Tutor, Long> {
 }
