@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,20 +21,19 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Student extends User {
+
+    public Date birthdate;
+
+    @Min(1) @Max(11)
+    public int grade_number;
+
+    @Pattern(regexp = "[А-Я]")
+    public String grade_letter;
+
+    // TODO: it's ManyToOne !!!
     @OneToOne
     @JoinColumn(name = "school_id", referencedColumnName = "id")
     public School school;
-
-    public LocalDate birthdate;
-
-    // todo IDK how to store NULL or number instead of 0 or number
-    @Min(0)
-    @Max(11)
-    public int grade_number;
-
-    // TODO: ASCII will be faster (cringe, but better constant - O(ALPHABET_SIZE) vs O(1))
-    @Pattern(regexp = "[А-Я]")
-    public String grade_letter;
 
     @ManyToMany
     @JoinTable(

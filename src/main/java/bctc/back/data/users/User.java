@@ -22,10 +22,7 @@ public abstract class User {
     @JsonIgnore
     protected Credentials credentials;
 
-    protected String firstName;
+    protected String first_name;
 
-    protected String lastName;
-
-    protected int age;
-
+    protected String last_name;
 }
