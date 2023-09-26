@@ -6,6 +6,7 @@ import bctc.back.data.users.student.StudentRepository;
 import bctc.back.data.users.turor.TutorRepository;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +24,13 @@ import java.util.stream.Stream;
  * spring.jpa.hibernate.ddl-auto: create-drop<br>
  * spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect<br>
  * spring.jpa.defer-datasource-initialization: true<br>
+ *
+ * <strong>If database contains any values</strong>
  */
 
 @SpringBootTest
 @Sql({
+		"/sql/clear.sql",
 		"/sql/credentials.sql",
 		"/sql/parent.sql",
 		"/sql/student.sql",
