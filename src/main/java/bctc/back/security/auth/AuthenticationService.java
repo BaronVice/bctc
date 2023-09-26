@@ -1,40 +1,28 @@
-package bctc.back.controllers;
+package bctc.back.security.auth;
 
 import bctc.back.data.credentials.Credentials;
-import bctc.back.data.credentials.CredentialsDetails;
 import bctc.back.data.credentials.CredentialsRepository;
 import bctc.back.exceptions.UserAlreadyExistsException;
-import bctc.back.security.AuthRequestDto;
+import bctc.back.security.auth.requests.AuthenticationRequest;
+import bctc.back.security.auth.requests.RegisterRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@RestController
+@Service
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
-public class AuthController {
+public class AuthenticationService {
     final PasswordEncoder passwordEncoder;
     final AuthenticationManager authenticationManager;
     final CredentialsRepository credentialsRepository;
 
-    @PostMapping("/public-test")
-    public ResponseEntity<?>publicTest(@Validated @RequestBody AuthRequestDto request) {
-        return ResponseEntity.ok("That's all good man");
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<?>registerUser(@Validated @RequestBody AuthRequestDto request){
+    public String register(RegisterRequest request){
         checkIfExists(request.username());
         String encodedPassword = passwordEncoder.encode(request.password());
 
@@ -47,7 +35,7 @@ public class AuthController {
         credentials.connectUser(request.role());
         credentialsRepository.save(credentials);
 
-        return ResponseEntity.ok("User has been successfully created");
+        return "Registered;\nTODO: figure out AuthenticationResponse";
     }
 
     private void checkIfExists(String username){
@@ -56,16 +44,12 @@ public class AuthController {
             throw new UserAlreadyExistsException();
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<?>authenticateUser( @RequestBody AuthRequestDto request) {
+    public String authenticate(AuthenticationRequest request){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        CredentialsDetails details = (CredentialsDetails) authentication.getPrincipal();
-
-        return ResponseEntity.ok("Welcome in, mf");
+        return "Authenticated;\nTODO: figure out AuthenticationResponse";
     }
 }

@@ -1,4 +1,4 @@
-package bctc.back.security;
+package bctc.back.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-public class WebConfiguration {
+public class WebConfig {
     final String FRONTEND_URL = "*";
 
     @Bean

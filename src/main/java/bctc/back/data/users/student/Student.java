@@ -24,7 +24,7 @@ public class Student extends User {
 
     public Date birthdate;
 
-    @Min(1) @Max(11)
+    @Min(0) @Max(11)
     public int grade_number;
 
     @Pattern(regexp = "[А-Я]")

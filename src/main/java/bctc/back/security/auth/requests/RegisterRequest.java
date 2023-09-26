@@ -1,15 +1,15 @@
-package bctc.back.security;
+package bctc.back.security.auth.requests;
 
+import bctc.back.data.credentials.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-// todo determine possible authentication inputs and handle them appropriately
-public record AuthRequestDto(
+public record RegisterRequest(
         @NotBlank
         String username,
         @NotBlank
         String password,
-        @NotNull
+        @NotNull // or @NotBlank?
         Role role
 ) {
 }

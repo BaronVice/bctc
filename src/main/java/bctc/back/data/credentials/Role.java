@@ -1,4 +1,4 @@
-package bctc.back.security;
+package bctc.back.data.credentials;
 
 public enum Role {
     STUDENT,

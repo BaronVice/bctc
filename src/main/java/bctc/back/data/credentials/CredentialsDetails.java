@@ -9,12 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Data
-@AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
 // Combines info from User entity and its extension (like student, tutor etc.)
 public class CredentialsDetails implements UserDetails, CredentialsContainer {
-
     @NonNull
     private Credentials credentials;
 

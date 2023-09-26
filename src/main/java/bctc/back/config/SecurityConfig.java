@@ -1,52 +1,24 @@
-package bctc.back.security;
+package bctc.back.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfiguration {
-
-    // Comes from CredentialsService
-    private final UserDetailsService userDetailsService;
+public class SecurityConfig {
+    private final AuthenticationProvider authenticationProvider;
 
     private final String[] publicRoutes = {"/users/*", /* TODO: delete later-> */"/api/v1/students/index"};
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
-    }
-
 
     @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -59,7 +31,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
 
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider)
 //                .formLogin(login -> login.successForwardUrl("/api/v1/students/")
 //                        .loginProcessingUrl("/api/auth/signin"));
                 .formLogin(AbstractHttpConfigurer::disable)
