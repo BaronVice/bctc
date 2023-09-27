@@ -1,5 +1,6 @@
-package bctc.back.security.auth;
+package bctc.back.controllers;
 
+import bctc.back.security.auth.AuthenticationService;
 import bctc.back.security.auth.requests.AuthenticationRequest;
 import bctc.back.security.auth.requests.RegisterRequest;
 import lombok.RequiredArgsConstructor;

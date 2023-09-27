@@ -18,17 +18,17 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
-    private final String[] publicRoutes = {"/users/*", /* TODO: delete later-> */"/api/v1/students/index"};
+    private final String[] publicRoutes = {"/users/*"};
 
     @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(publicRoutes).permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        .anyRequest().authenticated()
+//                        .requestMatchers(publicRoutes).permitAll()
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
 
                 .authenticationProvider(authenticationProvider)

@@ -44,12 +44,21 @@ public class AuthenticationService {
             throw new UserAlreadyExistsException();
     }
 
-    public String authenticate(AuthenticationRequest request){
+    public Authentication authenticate(AuthenticationRequest request){
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "Authenticated;\nTODO: figure out AuthenticationResponse";
+//        String username = request.username();
+//        String password = request.password();
+//        return new UsernamePasswordAuthenticationToken(
+//                credentialsRepository.findByUsername(username).get(),
+//                password,
+//                Collections.emptyList()
+//        );
+
+        return authentication;
     }
 }

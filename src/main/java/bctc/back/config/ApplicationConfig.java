@@ -1,7 +1,6 @@
 package bctc.back.config;
 
-import bctc.back.data.credentials.CredentialsDetails;
-import bctc.back.data.credentials.CredentialsRepository;
+import bctc.back.data.credentials.CredentialsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,14 +9,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final CredentialsRepository credentialsRepository;
+    private final CredentialsService credentialsService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -36,10 +34,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> new CredentialsDetails(
-                credentialsRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("Username not found"))
-        );
+        return credentialsService;
     }
 
     @Bean
